@@ -76,3 +76,11 @@ local str = "Hello world!"
 str:print()
 > "Hello world!"
 ```
+
+all the functions that return a string can be chained. thats just a lua thing. nothing to do with this module.
+```
+str = ";:;;Hello world!&&).  "
+str:strip():upper():print()
+> HELLO WORLD
+```
+
