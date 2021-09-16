@@ -57,9 +57,6 @@ str:strip():print()
 > "Hello.world"
 ```
 
-### `exString.join(delimiter, ...)`
-As i'm writing this i realized this function is almost exactly the same as exString.append. I'll probably remove this.
-
 ### `exString.replace(str, target, repl)`
 This is probably the least useful function here, It's just an alias for `string.gsub`. Although the name might make your code a little clearer for someone not familiar with gsub.
 ```
@@ -74,12 +71,5 @@ This is just an alias to `print()`, But implemented like this it can be called d
 local str = "Hello world!"
 str:print()
 > "Hello world!"
-```
-
-all the functions that return a string can be chained. thats just a lua thing. nothing to do with this module.
-```
-str = ";:;;Hello world!&&).  "
-str:strip():upper():print()
-> HELLO WORLD
 ```
 
