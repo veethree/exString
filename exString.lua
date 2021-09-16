@@ -25,8 +25,15 @@
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
 
-
 local exString = {}
+
+local function escape_magic(str)
+    local magic = {"$","%", "^", "*", "(", ")", ".", "[", "]", "+", "-", "?"}
+    for i,v in ipairs(magic) do
+        str = str:gsub("%"..v, "%%%1")
+    end
+    return str
+end
 
 -- Appends exString methods to the standard string library
 -- This is optional, But allows you to call the methods directly on strings
@@ -58,15 +65,19 @@ function exString.append(str, delimiter, ...)
 end
 
 -- Splits a string by a specified delimiter, and returns the result as a table.
+-- It doesn't seem to like $ as a delimiter.
 function exString.split(str, delimiter)
     delimiter = delimiter or ","
     local segments = {}
 
-   if not str:endsWith(",") then str = str:append(delimiter) end
+   if not str:endsWith(delimiter) then str= str..delimiter end
 
     --Splitting
-    for seg in str:gmatch("(%w+)"..delimiter) do
+    local pat = "([^"..escape_magic(delimiter)..".+]+)"..escape_magic(delimiter)
+    pat:print()
+    for seg in str:gmatch(pat) do
         segments[#segments + 1] = seg
+        print(seg)
     end
     return segments
 end
@@ -77,22 +88,13 @@ function exString.strip(str)
     return stripped
 end
 
--- Joins multiple strings together
--- Optionally adds a delimiter between them
-function exString.join(delimiter, ...)
-    delimiter = delimiter or ""
-    local str = ""
-    for i,v in ipairs({...}) do
-        str = str..tostring(v)..delimiter
-    end
-    return str:sub(1, #str - #delimiter)
-end
-
+-- Replaces 'target' in 'str' with 'repl'
 function exString.replace(str, target, repl)
     local res = str:gsub(target, repl)
     return res
 end
 
+-- prints the string to console
 function exString.print(str)
     print(str)
 end
